@@ -1,6 +1,6 @@
 # Stage 7 Testing and Verification Record
 
-Group/tutorial: [complete]  Members/cohorts: [complete]
+Group/tutorial: Tuesday 1:30-3:30 / Group 2  Members/cohorts: Kreesha Singh, Alex Marek
 Requirements baseline: SmartCare A3 Requirements Baseline 2026, revision 2.
 Use the same project/. Link actual evidence; keep responses concise. Blank fields are for your group. Copy rows only as needed.
 
@@ -352,10 +352,10 @@ Tests should be based on requirements, check meaningful observable behaviour, an
 
 ## O Stage Completion
 
-Tested Stage 7 main SHA: [complete]
-Full-suite result: [complete]
-Unresolved defects and effect on baseline: [complete or none]
-Clean working tree and integration evidence: [complete]
-Stage 8 handover status: [complete; no Stage 8 work assigned]
-All tutorial/formative responses and traceability/Copilot decisions complete: [confirm]
+Tested Stage 7 main SHA: ad1a79e6f7cb5e85c48a328b58012d17da59b176
+Full-suite result: Suite reported 47 passed, 0 failed.
+Unresolved defects and effect on baseline: No unresolved defects were identified in the previously recorded test run. However, passing tests do not prove that the system is free of defects.
+Clean working tree and integration evidence: Yes
+Stage 8 handover status: Stage 7 testing and verification documentation prepared. No Stage 8 work assigned.
+All tutorial/formative responses and traceability/Copilot decisions complete: Yes
 
