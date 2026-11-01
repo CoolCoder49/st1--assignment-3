@@ -3,7 +3,7 @@
 Complete this one group record. Link actual issues, diffs, tests and reviews; avoid copying entire histories. Blank fields are intentional. Duplicate rows as needed. Use synthetic data only. Every member records their own meaningful contribution. Do not invent results, reviews or Copilot use.
 
 - Group/tutorial: Tue 1:30 - 3:30 Group 2
-- Members, GitHub usernames and cohorts: Alex Marek (UG), Kreesha Singh (UG), CoolCoder49, 
+- Members, GitHub usernames and cohorts: Alex Marek (UG), Kreesha Singh (UG), CoolCoder49, kreesha-12
 - Repository URL: https://github.com/CoolCoder49/st1--assignment-3
 - Starting SHA: 54c50924b75cebfff7e9b762cf225f9a69be1936
 
