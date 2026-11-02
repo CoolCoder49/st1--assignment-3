@@ -102,12 +102,12 @@ Complete both entries BEFORE Copilot. C/D supply observed/expected/reproduction/
 ### F8-01 human entry
 Likely cause and why plausible: The datastore's practitioner conflict check may be using the wrong comparison operator. The failed tests show that a second booking for the same practitioner is not recognised as a conflict.
 Evidence intended to inspect / competing explanation / discriminating check: Compare the practitioner IDs used in has_practitioner_conflict() and check the call from AppointmentService.book_appointment(). An alternative explanation is that the service is failing to call the conflict check. Inspecting the call path can distinguish these causes.
-Member and saved sequence/time or commit showing this preceded consultation: Alex. 2/11/2026: 2:12PM. `f552418d4aabab9f705bef9891b9650b20c150c9`
+Member and saved sequence/time or commit showing this preceded consultation: Alex. 1/11/2026: 4:15PM. `f552418d4aabab9f705bef9891b9650b20c150c9`
 
 ### F8-02 human entry
 Likely cause and why plausible: Appointment lookup may be filtering out cancelled records rather than returning the stored appointment by ID. The failure occurs after cancellation even though the appointment object still exists in the workflow.
 Evidence intended to inspect / competing explanation / discriminating check: Compare list_appointments() with find_appointment() after cancellation. Check whether the appointment remains stored but is filtered during lookup. Another possible cause is removal from the underlying appointment collection; the two observations distinguish them.
-Member and saved sequence/time or commit showing this preceded consultation: Alex. 2/11/2026: 2:30PM. `f552418d4aabab9f705bef9891b9650b20c150c9`
+Member and saved sequence/time or commit showing this preceded consultation: Alex. 1/11/2026: 4:37PM. `f552418d4aabab9f705bef9891b9650b20c150c9`
 
 ## F. GitHub Copilot prompts, findings and human decisions
 
