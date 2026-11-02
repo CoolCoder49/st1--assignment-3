@@ -62,7 +62,7 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
 
 ## B. Stage 7 baseline and safe preparation
 
-- Stage 7 code SHA and requirement baseline: [complete]
+- Stage 7 code SHA and requirement baseline: `ad1a79e6f7cb5e85c48a328b58012d17da59b176` SmartCare A3 Requirements Baseline 2026, revision 2.
 - Baseline test command / working directory / observed result / evidence: [complete]
 - Clean preparation SHA if a record-only commit followed Stage 7: [complete]
 - Branch and preparer / how teammates obtained this branch: [complete]
