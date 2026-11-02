@@ -26,7 +26,13 @@ Response and reason: [complete]
 ### A.2 Build a debugging record
 Choose the cancelled-history scenario or a same-practitioner/time booking. Before changing code, record expected behaviour, observed behaviour, minimal reproduction, a hypothesis and evidence to inspect. Use a requirement to justify the expectation. Keep the initial hypothesis even if later evidence disproves it.
 
-Response and reason: [complete]
+Response and reason: 
+
+- Expected behaviour: Following FR-07 and AC-05.2, a cancelled appointment must remain stored and retrievable using its original ID.
+- Observed behaviour: After cancelling A001, store.find_appointment("A001") returned None instead of the original appointment.
+- Minimal reproduction: Register patient P001 and practitioner D001, book A001 at 2026-11-01 10:30, cancel it and attempt to find A001 using the same datastore.
+- Hypothesis: The appointment lookup method may be excluding cancelled appointments instead of returning all stored appointments by their ID.
+- Evidence to inspect: Compare list_appointments() and find_appointment() after cancellation, inspect the datastore's lookup conditions and trace the service's call to the datastore.
 
 ### A.3 Test defect or product defect
 A test expects cancelled appointments to be deleted, but FR-07 says history must be retained. What should be changed? Explain why. Also decide whether a test expecting different practitioners at the same time to conflict reflects AC-04.2. Do not assume every failing test is correct.
@@ -63,28 +69,28 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
 - Downloaded tool version, source SHA256 and --check outcome: [complete]
 - --apply and --verify output summaries / artefact references: [complete]
 - Bounded diff inspected and recovery location (not committed): [complete]
-- Prepared faulty-state commit SHA: [complete]
+- Prepared faulty-state commit SHA: 27445c702a5c32c3922f94f4239768e481b60d5c
 - Preparation or recovery issues and resolution, if any: [complete]
-- Initial prepared full-suite command / result / key failures: [complete]
+- Initial prepared full-suite command / result / key failures: Ran python -m pytest -q from project/ on main at SHA d5bf17c1bf3b556c3339cbbf5e946ec13fcb32a5. Result: 42 passed, 5 failed in 0.32s. Two failures related to practitioner conflicts (F8-01), where a ValueError was expected but not raised. Three failures related to cancelled appointment history (F8-02), where cancelled records could not be retrieved and repeated cancellation raised LookupError instead of ValueError.
 
 ## C. F8-01 diagnosis and repair
 
-- Symptom / observed behaviour: [complete]
-- Expected behaviour and requirement: [complete]
-- Minimal synthetic reproduction steps: [complete]
-- Meaningful failing test path/name and exact relevant failure: [complete]
-- Human hypothesis and intended checks: see E, F8-01.
+- Symptom / observed behaviour: The system allowed a second appointment to be booked for the same practitioner at the same date and time. The existing tests expected ValueError, but no exception was raised.
+- Expected behaviour and requirement: According to FR-05 and AC-04.1, a practitioner cannot have two scheduled appointments at the same time. AC-04.2 allows different practitioners to have appointments at the same time. Rejected bookings must not change existing stored appointments.
+- Minimal synthetic reproduction steps: Create a fresh SmartCareDataStore and register patients P001 and P002 and practitioners D001 and D002. Book appointment A001 for P001 with D001 at 2026-11-01 10:30. Attempt to book A002 for P002 with D001 at the same time. The expected result is ValueError, but the faulty implementation allows the booking. In a separate fresh test setup, book appointments with D001 and D002 at the same time to check that different practitioners are allowed. Check that rejected bookings do not change the stored appointment records.
+- Meaningful failing test path/name and exact relevant failure: `tests/test_services.py::test_booking_rejects_practitioner_time_conflict` failed at line 102 because the expected ValueError was not raised. The supplied starter test `tests/test_starter.py::test_conflict_rule_and_different_practitioner` also failed at line 127 because the conflicting booking was accepted.
+- Human hypothesis and intended checks: See E, F8-01.
 - Supported root cause and inspected code/runtime evidence: [complete after diagnosis]
 - Smallest justified fix / diff / why other behaviour is preserved: [complete]
 - Repair SHA / focused verification result: [complete]
 
 ## D. F8-02 diagnosis and repair
 
-- Symptom / observed behaviour: [complete]
-- Expected behaviour and requirement: [complete]
-- Minimal synthetic reproduction steps: [complete]
-- Meaningful failing test path/name and exact relevant failure: [complete]
-- Human hypothesis and intended checks: see E, F8-02.
+- Symptom / observed behaviour: After cancelling an appointment, the data store returned None when searching for its ID. Attempting to cancel the same appointment again raised LookupError rather than ValueError.
+- Expected behaviour and requirement: According to FR-06, FR-07, AC-05.2 and AC-05.3, cancellation must change the appointment status to CANCELLED without removing its stored history. The same object must remain retrievable, and a repeated cancellation must raise ValueError without changing the record.
+- Minimal synthetic reproduction steps: Register P001 and D001, book A001 at 2026-11-01 10:30 and cancel it. Search for A001 using the same SmartCareDataStore instance, then attempt a second cancellation. The current tests show that lookup returns None and repeated cancellation raises LookupError.
+- Meaningful failing test path/name and exact relevant failure: `tests/test_services.py::test_cancel_appointment_retains_record_and_changes_status` failed at line 134 because `store.find_appointment("A001")` returned None instead of the original appointment. `test_cancelling_again_raises_value_error_and_preserves_state` failed because LookupError was raised instead of ValueError. `test_cancelled_slot_can_be_booked_again` also failed because the cancelled original appointment could not be retrieved.
+- Human hypothesis and intended checks: See E, F8-02.
 - Supported root cause and inspected code/runtime evidence: [complete after diagnosis]
 - Smallest justified fix / diff / why other behaviour is preserved: [complete]
 - Repair SHA / focused verification result: [complete]
@@ -94,14 +100,14 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
 Complete both entries BEFORE Copilot. C/D supply observed/expected/reproduction/test; retain those initial facts and link them here.
 
 ### F8-01 human entry
-Likely cause and why plausible: [complete]
-Evidence intended to inspect / competing explanation / discriminating check: [complete]
-Member and saved sequence/time or commit showing this preceded consultation: [complete]
+Likely cause and why plausible: The datastore's practitioner conflict check may be using the wrong comparison operator. The failed tests show that a second booking for the same practitioner is not recognised as a conflict.
+Evidence intended to inspect / competing explanation / discriminating check: Compare the practitioner IDs used in has_practitioner_conflict() and check the call from AppointmentService.book_appointment(). An alternative explanation is that the service is failing to call the conflict check. Inspecting the call path can distinguish these causes.
+Member and saved sequence/time or commit showing this preceded consultation: Alex. 1/11/2026: 4:15PM.
 
 ### F8-02 human entry
-Likely cause and why plausible: [complete]
-Evidence intended to inspect / competing explanation / discriminating check: [complete]
-Member and saved sequence/time or commit showing this preceded consultation: [complete]
+Likely cause and why plausible: Appointment lookup may be filtering out cancelled records rather than returning the stored appointment by ID. The failure occurs after cancellation even though the appointment object still exists in the workflow.
+Evidence intended to inspect / competing explanation / discriminating check: Compare list_appointments() with find_appointment() after cancellation. Check whether the appointment remains stored but is filtered during lookup. Another possible cause is removal from the underlying appointment collection; the two observations distinguish them.
+Member and saved sequence/time or commit showing this preceded consultation: Alex. 1/11/2026: 4:37PM 
 
 ## F. GitHub Copilot prompts, findings and human decisions
 
