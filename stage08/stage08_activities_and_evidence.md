@@ -332,7 +332,7 @@ The Stage 8 engineering rule is to diagnose before fixing. Engineers should firs
 
 Verified integrated code SHA / result: The verified integrated Stage 8 code is at commit 7d8c533f4912ba1c0bd4775385f80805b9ab32e2 on main, following the merge of Pull Request #8. I verified the merge using Git and created a separate worktree to test the integrated code without affecting the original debugging branch. I ran python -m pytest -q from smartcare-stage8-main-check/project/, which returned 49 passed in 0.09s, with no failures. This confirms that both Stage 8 repairs, the retained regression tests, and the refactoring are working in the merged project.
 
-Submitted SHA and evidence-only difference if any: [complete]
+Submitted SHA and evidence-only difference if any: The Stage 8 code was integrated and verified on main at commit 7d8c533f4912ba1c0bd4775385f80805b9ab32e2, with all 49 tests passing. The final documentation updates were then merged through Pull Request #9 at commit 7cc820a54f64c7849a69a753d8fe8a3dc28a7918.
 
 Unresolved issues or incomplete checks / owner / next action: No unresolved issues or incomplete checks. Kreesha approved the changes on github, and the pull request was merged. Alex is the owner. Next action is to finalise and commit the Stage 8 documentation, then push the changes to github.
 
