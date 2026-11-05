@@ -107,7 +107,7 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
 
 ## B. Stage 7 baseline and safe preparation
 
-- Stage 7 code SHA and requirement baseline: `ad1a79e6f7cb5e85c48a328b58012d17da59b176` SmartCare A3 Requirements Baseline 2026, revision 2.
+- Stage 7 code SHA and requirement baseline: 6b2c70c4695a2b4c3e27a71b30d8998cc8b68f95 - SmartCare A3 Requirements Baseline 2026, revision 2.
 - Baseline test command / working directory / observed result / evidence: The pre-injection Stage 7 code was verified at SHA 6b2c70c4695a2b4c3e27a71b30d8998cc8b68f95, immediately before the Stage 8 fault-injection commit. I created a separate Git worktree to preserve the existing debugging branch. Ran python -m pytest -q from smartcare-stage7-check/project/ using pytest 9.2.0. Result: 47 passed, 0 failed in 0.09 seconds. This confirms that all 47 existing tests passed before we introduced the controlled faults.
 - Clean preparation SHA if a record-only commit followed Stage 7: N/A
 - Branch and preparer / how teammates obtained this branch: During class, our tutor introduced the controlled Stage 8 faults on Kreesha's laptop using the debug/stage8 branch. The faulty-state changes were committed at SHA 27445c702a5c32c3922f94f4239768e481b60d5c and subsequently merged into main through GitHub pull request #4 (ad1a79e). The prepared code was then available to both group members through the shared GitHub repository. We are completing further debugging work on the debug/stage8-repairs branch.
@@ -125,7 +125,7 @@ Traceback — exception/assertion; expected/observed values; test line; call pat
 - Minimal synthetic reproduction steps: Create a fresh SmartCareDataStore and register patients P001 and P002 and practitioners D001 and D002. Book appointment A001 for P001 with D001 at 2026-11-01 10:30. Attempt to book A002 for P002 with D001 at the same time. The expected result is ValueError, but the faulty implementation allows the booking. In a separate fresh test setup, book appointments with D001 and D002 at the same time to check that different practitioners are allowed. Check that rejected bookings do not change the stored appointment records.
 - Meaningful failing test path/name and exact relevant failure: `tests/test_services.py::test_booking_rejects_practitioner_time_conflict` failed at line 102 because the expected ValueError was not raised. The supplied starter test `tests/test_starter.py::test_conflict_rule_and_different_practitioner` also failed at line 127 because the conflicting booking was accepted.
 - Human hypothesis and intended checks: See E, F8-01.
-- Supported root cause and inspected code/runtime evidence: Supported root cause and inspected code/runtime evidence: The root cause was identified in SmartCareDataStore.has_practitioner_conflict() within project/smartcare/data_store.py. The condition appointment.practitioner.practitioner_id != practitioner_id incorrectly compares practitioner IDs using != instead of ==. This means the method checks for appointments belonging to different practitioners rather than identifying an existing appointment for the same practitioner at the same date and time. The call path was inspected in AppointmentService.book_appointment(), which correctly passes practitioner.practitioner_id and date_time to the conflict-checking method. This ruled out the alternative hypothesis that the service skipped the check or passed incorrect arguments. The failing tests test_booking_rejects_practitioner_time_conflict and test_conflict_rule_and_different_practitioner support this diagnosis, as both expected ValueError, but no exception was raised. The Git diff also confirmed that the comparison was changed from == to != during the controlled Stage 8 fault injection. Therefore, the incorrect comparison operator is the supported root cause of F8-01, contradicting FR-05 and AC-04.1.
+- Supported root cause and inspected code/runtime evidence: The root cause was identified in SmartCareDataStore.has_practitioner_conflict() within project/smartcare/data_store.py. The condition appointment.practitioner.practitioner_id != practitioner_id incorrectly compares practitioner IDs using != instead of ==. This means the method checks for appointments belonging to different practitioners rather than identifying an existing appointment for the same practitioner at the same date and time. The call path was inspected in AppointmentService.book_appointment(), which correctly passes practitioner.practitioner_id and date_time to the conflict-checking method. This ruled out the alternative hypothesis that the service skipped the check or passed incorrect arguments. The failing tests test_booking_rejects_practitioner_time_conflict and test_conflict_rule_and_different_practitioner support this diagnosis, as both expected ValueError, but no exception was raised. The Git diff also confirmed that the comparison was changed from == to != during the controlled Stage 8 fault injection. Therefore, the incorrect comparison operator is the supported root cause of F8-01, contradicting FR-05 and AC-04.1.
 - Smallest justified fix / diff / why other behaviour is preserved: The smallest repair was to change the practitioner ID comparison from != to == in SmartCareDataStore.has_practitioner_conflict() in project/smartcare/data_store.py. This allows the method to correctly identify an existing scheduled appointment for the same practitioner at the requested date and time. No other production code was changed. The appointment ID exclusion, exact date/time comparison, and scheduled-status condition were kept unchanged. The Git diff confirmed that only this comparison operator was changed. The repair was committed separately on debug/stage8-repairs as a79f2d712d33c5dbad9d895295f1c4dfd89522c5 (Stage 8 fix F8-01 practitioner booking conflict).
 - Repair SHA / focused verification result: The F8-01 repair was committed on debug/stage8-repairs at SHA a79f2d712d33c5dbad9d895295f1c4dfd89522c5. After applying the one-operator fix, I ran python -m pytest -q tests/test_regressions.py::test_f8_01_practitioner_conflict_regression from project/, which passed with 1 passed in 0.01s. I then ran python -m pytest -q -k "booking_rejects_practitioner_time_conflict or conflict_rule_and_different_practitioner", which returned 2 passed, 47 deselected in 0.03s. This confirmed that all three F8-01 tests were passing. I also ran the full test suite using python -m pytest -q from project/, which returned 45 passed, 4 failed in 0.14s. All four remaining failures were related to F8-02, which had not yet been repaired. No F8-01 failures remained, and the previously passing tests continued to pass. These tests were run after the repair was applied and before the repair commit was created.
 
@@ -211,21 +211,21 @@ Issues for both defects / refactor scope and owners: Three GitHub issues were cr
 - F8-02 (Cancelled appointment lookup): GitHub Issue #6. Covers the cancelled-status lookup filter, retained appointment history, minimal repair and regression verification. Repair completed by Alex in commit c57312d93696542068b6d23a92617cfd68558364.
 - Refactoring (Appointment status comparison): GitHub Issue #7. Covers replacing the hardcoded "scheduled" string with AppointmentStatus.SCHEDULED whilst preserving existing behaviour. Refactoring completed by Alex Marek in commit cf2f4fcf4f1cac9c5947abbc7a211336f58539c7.
 
-All three changes were completed on debug/stage8-repairs and will be included in the Stage 8 pull request for the other group member's independent review.
+All three changes were completed on debug/stage8-repairs and included in Pull Request #8. Kreesha independently reviewed and approved the pull request without requesting changes. It was then merged into main at commit 7d8c533f4912ba1c0bd4775385f80805b9ab32e2.
 
 Branch / prepared, repair and refactor checkpoints: The controlled Stage 8 faults were introduced on debug/stage8 in commit 27445c702a5c32c3922f94f4239768e481b60d5c, as documented in Section B. The debugging work was then completed on debug/stage8-repairs. The F8-01 and F8-02 regression tests were saved first in commit 5538842b53ca6b7fd12225f29a2d77570afd5d37. The F8-01 practitioner conflict repair was committed separately at a79f2d712d33c5dbad9d895295f1c4dfd89522c5 (Section C), followed by the F8-02 cancelled appointment lookup repair at c57312d93696542068b6d23a92617cfd68558364 (Section D). After both repairs passed the full test suite, I committed the behaviour-preserving status comparison refactor at cf2f4fcf4f1cac9c5947abbc7a211336f58539c7 (Section H). The assessment record and Copilot evidence were then committed separately as d338751. These changes were pushed to GitHub and submitted for independent review through Pull Request #8.
 
-PR link and another member's reviewer identity: GitHub Pull Request #8 was created from debug/stage8-repairs into main to submit the two defect repairs, regression tests, and behaviour-preserving refactoring for review. I requested an independent review from Kreesha Singh, the other group member. The review has been requested but has not yet been recorded as completed or approved.
+PR link and another member's reviewer identity: GitHub Pull Request #8 was created from debug/stage8-repairs into main to submit the two defect repairs, regression tests, and behaviour-preserving refactoring for independent review. I requested a review from Kreesha, who later approved it on GitHub.
 
-Key human feedback, difference from Copilot findings and response/outcome: [complete]
+Key human feedback, difference from Copilot findings and response/outcome: No feedback was given from Kreesha.
 
-Actual review approval / merge evidence: [complete]
+Actual review approval / merge evidence: Kreesha approved the changes on github through Pull Request #8. The merge commit is 7d8c533f4912ba1c0bd4775385f80805b9ab32e2.
 
-Integrated code SHA and team pull/retest command / working directory / result: [complete]
+Integrated code SHA and team pull/retest command / working directory / result: Pull Request #8 was merged into main at commit 7d8c533f4912ba1c0bd4775385f80805b9ab32e2. I verified the merge using git fetch origin main and git log -1 --format="%H%n%s%n%P" origin/main, which confirmed that the merge included the debug/stage8-repairs branch. To verify the integrated code without affecting my existing working branch, I created a separate Git worktree using git worktree add --detach ../smartcare-stage8-main-check origin/main. I then ran python -m pytest -q from smartcare-stage8-main-check/project/, which returned 49 passed in 0.09s, with no failures. This confirms that the full test suite still passes on the merged main code.
 
-Evidence-only later SHA / explanation if different: [complete or not applicable]
+Evidence-only later SHA / explanation if different: 76ee2957e65af91c46ea10ad2defd12272802a6d. This commit was made after the pull request had already been merged, so it was not included in the original merge. It does not change the production code or tests. The final documentation will be integrated into main separately.
 
-Each member's substantive contribution and artefact: [complete]
+Each member's substantive contribution and artefact: Alex investigated both Stage 8 defects, recorded the human-first hypotheses, consulted and evaluated GitHub Copilot, wrote the F8-01 and F8-02 regression tests, completed both minimal repairs, and carried out the behaviour-preserving refactoring. These contributions are recorded in project/tests/test_regressions.py, project/smartcare/data_store.py, the separate Git commits, and Sections C-H of this assessment record. Kreesha Singh participated in the controlled fault-injection preparation during class, with the prepared code recorded in commit 27445c702a5c32c3922f94f4239768e481b60d5c. She also independently reviewed and approved Pull Request #8, which contains the completed debugging work. Her approval is recorded in the pull request's review history.
 
 ## J. Required reflections
 
@@ -319,18 +319,21 @@ The Stage 8 engineering rule is to diagnose before fixing. Engineers should firs
 
 ## L. Completion and handover
 
-- [ ] Existing project, earlier tests and stage records preserved.
-- [ ] Passing Stage 7 SHA and safe preparation details recorded.
-- [ ] Both defects reproduced with meaningful failing tests.
-- [ ] Both human hypotheses recorded before Copilot; actual suggestions evaluated with evidence.
-- [ ] Supported causes and minimal repairs explained; focused and full regression results recorded.
-- [ ] One genuine refactor verified under passing before/after tests.
-- [ ] Human PR review, feedback resolution and integrated retest recorded.
-- [ ] Tutorial, three reflections and ten formative responses complete.
-- [ ] Local recovery metadata excluded from submitted source.
-- [ ] Same project and full suite ready for Stage 9 after Stage 8 integration, verification and recording.
+- [x] Existing project, earlier tests and stage records preserved.
+- [x] Passing Stage 7 SHA and safe preparation details recorded.
+- [x] Both defects reproduced with meaningful failing tests.
+- [x] Both human hypotheses recorded before Copilot; actual suggestions evaluated with evidence.
+- [x] Supported causes and minimal repairs explained; focused and full regression results recorded.
+- [x] One genuine refactor verified under passing before/after tests.
+- [x] Human PR review, feedback resolution and integrated retest recorded.
+- [x] Tutorial, three reflections and ten formative responses complete.
+- [x] Local recovery metadata excluded from submitted source.
+- [x] Same project and full suite ready for Stage 9 after Stage 8 integration, verification and recording.
 
-Verified integrated code SHA / result: see I.
+Verified integrated code SHA / result: The verified integrated Stage 8 code is at commit 7d8c533f4912ba1c0bd4775385f80805b9ab32e2 on main, following the merge of Pull Request #8. I verified the merge using Git and created a separate worktree to test the integrated code without affecting the original debugging branch. I ran python -m pytest -q from smartcare-stage8-main-check/project/, which returned 49 passed in 0.09s, with no failures. This confirms that both Stage 8 repairs, the retained regression tests, and the refactoring are working in the merged project.
+
 Submitted SHA and evidence-only difference if any: [complete]
-Unresolved issues or incomplete checks / owner / next action: [complete]
-Handover note: [complete]
+
+Unresolved issues or incomplete checks / owner / next action: No unresolved issues or incomplete checks. Kreesha approved the changes on github, and the pull request was merged. Alex is the owner. Next action is to finalise and commit the Stage 8 documentation, then push the changes to github.
+
+Handover note: Everything is complete for Stage 8. The two defects were diagnosed, repaired, and verified with regression tests. A small refactoring was applied to improve code clarity without changing behaviour. The full test suite passed before and after the repairs and refactoring. All changes were independently reviewed and merged into main. The project is ready for Stage 9.
