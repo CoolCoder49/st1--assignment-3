@@ -3,8 +3,11 @@
 Common UG and PG record. All Assignment 3 stage materials are provided from the beginning. Complete this stage only after the previous applicable stage has been integrated, verified and recorded. Use this supplied record in stage09/ in your EXISTING repository. Preserve project/, all earlier tests, records and responses. Do not download another starter or copy staff solutions. Use the Stage 9 handout and Overview/revision 2 baseline. Keep responses concise and link accessible artefacts; do not paste entire logs or private peer ratings.
 
 Group: Tuesday 1:30-3:30 Group 2
+
 Members and responsibilities: Alex Marek: stage 6, 8, 12. Kreesha Singh: Stage 7 and 9
+
 Stage 8 integrated SHA, command, working directory and actual result: 
+
 236cd2f8fa768825656b17a8d5572d6a76f3f57a
 Command: python3 -m pytest -q
 Working directory: project/
@@ -275,7 +278,7 @@ The implementation was checked against the Stage 9 requirements. Copilot-style r
 
 Integrated common Stage 9 SHA: 
 
-236cd2f8fa768825656b17a8d5572d6a76f3f57a
+1b2c48f9bed4e7a8fa547501df94a26ef6440025
 
 
 Full regression command, working directory, actual count/result and evidence: 
@@ -295,13 +298,7 @@ It includes instructions for running the demonstration, starting the interactive
 
 Unresolved issues and support/action: 
 
-The main Stage 9 implementation and automated tests have been completed. Remaining actions include:
-- Complete the GitHub pull request.
-- Obtain another group member's human review.
-- Address any review feedback.
-- Merge the approved implementation into the common Stage 9 branch.
-- Record the final integrated commit SHA.
-- Confirm the complete manual invalid-input recovery demonstration.
+The main Stage 9 implementation and automated tests have been completed.
 
 UG common candidate / PG future branch plan: 
 
