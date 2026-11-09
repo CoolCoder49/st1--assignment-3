@@ -8,7 +8,7 @@ Members and UG/PG applicability: Alex Marek (UG) and Kreesha Singh (UG).
 
 Release label/version and requirements baseline:
 
-SmartCare Stage 12 Undergraduate Final Release, using SmartCare A3 Requirements Baseline 2026, revision 2. The release covers the completed functionality from Stages 6-9, including patient and practitioner registration and lookup, appointment booking, conflict prevention, cancellation, retained appointment history, practitioner appointment listing, filtering, sorting and the interactive console. The application uses session-only in-memory storage. The final release SHA will be confirmed after all Stage 12 verification and integration activities are complete.
+SmartCare Stage 12 Undergraduate Final Release, using SmartCare A3 Requirements Baseline 2026, revision 2. The release covers the completed functionality from Stages 6-9, including patient and practitioner registration and lookup, appointment booking, conflict prevention, cancellation, retained appointment history, practitioner appointment listing, filtering, sorting and the interactive console. The application uses session-only in-memory storage. The tested application SHA is 0a4d76429ca42ce5cab4b67dce0c9adc9d014a17; the final evidence-only submission SHA will be provided with the submission.
 
 Common starting SHA / branch / applicable members:
 
@@ -22,21 +22,21 @@ Working-state review and approved integration:
 
 Before beginning Stage 12, I checked the local repository and its GitHub connection using Git commands. The working tree was clean, and the local `main` branch matched `origin/main`, with zero commits ahead and zero commits behind.
 
-Stage 9 was merged into `main` through Pull Request #10 at commit `1b2c48f`, followed by the Stage 9 evidence update at `89d106f`. However, the Stage 9 pull request was merged without my recorded independent review. I did not complete this review before merging, and I will not report it as an earlier approval. I will check the integrated code independently during Stage 12.
+Stage 9 was merged into `main` through Pull Request #10 at commit `1b2c48f`, followed by the Stage 9 evidence update at `89d106f`. However, the Stage 9 pull request was merged without my recorded independent review. I did not complete this review before merging, and I will not report it as an earlier approval. I then inspected the integrated code independently during Stage 12.
 
-I then ran the complete automated test suite from the `project/` directory using `python -m pytest -q`. The result was **61 passed in 0.08 seconds**, using Python 3.14.6 and pytest 9.2.0. This confirms that the current integrated application passes all 61 available tests in my local environment. The final release will still require further verification, including the interactive console, documentation, code quality and reproducibility checks.
+I then ran the complete automated test suite from the `project/` directory using `python -m pytest -q`. The result was **61 passed in 0.08 seconds**, using Python 3.14.6 and pytest 9.2.0. This confirms that the current integrated application passes all 61 available tests in my local environment. This was the initial baseline test; later Stage 12 checks covered the interactive console, release documentation, code quality and extracted-ZIP operation.
 
 Protected common candidate and PG differences:
 
 The starting common candidate is commit `89d106fecbd1671a184728f233c3e669ea0a7957`. This starting version remains recoverable through Git history. Stage 12 changes were developed separately on release/stage12-common before independent review and integration into main.
 
-There is no PG extension or alternative PG candidate because both group members are undergraduate students. The final common release SHA will be recorded after all required Stage 12 checks and any necessary reviewed corrections are complete.
+There is no PG extension or alternative PG candidate because both group members are undergraduate students. The tested common application SHA is 0a4d76429ca42ce5cab4b67dce0c9adc9d014a17; the subsequent submitted SHA differs only because of release-evidence updates.
 
 Feature freeze / owner / verifier:
 
-Optional feature development has been stopped for Stage 12. The remaining work will focus on checking the existing application, verifying requirements, completing release documentation, reviewing code quality, and correcting any genuine release blockers identified. No new database, persistence system, rescheduling feature or unnecessary dependency will be introduced.
+Optional feature development has been stopped for Stage 12. Stage 12 work focused on checking the existing application, verifying requirements, completing release documentation, reviewing code quality and correcting a genuine Python import issue. No new database, persistence system, rescheduling feature or unnecessary dependency will be introduced.
 
-Alex is responsible for preparing the Stage 12 release evidence and coordinating final verification. Kreesha independently reviewed and approved Pull Request #11 before it was merged into `main`. The merged application passed all 61 tests using Python 3.13.17 and pytest 8.3.5. Final submission packaging and fresh-copy verification are still pending.
+Alex is responsible for preparing the Stage 12 release evidence and coordinating final verification. Kreesha independently reviewed and approved Pull Request #11 before it was merged into main. The merged application passed all 61 tests using Python 3.13.17 and pytest 8.3.5. A preliminary source ZIP from commit 25c5bb7777a9cbb9235eceae67c38cad684e05ab was extracted separately: 61 tests passed in 0.11s and the demonstration ran. Regeneration from the final evidence-only commit is still pending.
 
 ## B Requirements and release readiness matrix
 
@@ -83,7 +83,7 @@ All six existing test files were preserved. No test assertions were changed or r
 
 Remaining failure / limitation:
 
-No automated test failures remain. The interactive demonstration and invalid-input recovery checks passed. Kreesha independently approved PR #11, and all 61 tests passed on the merged commit using Python 3.13.17 and pytest 8.3.5. Session-only storage remains an intentional limitation. Fresh-copy and submission ZIP verification are still pending.
+No automated test failures remain. The interactive demonstration and invalid-input recovery checks passed. Kreesha independently approved PR #11, and all 61 tests passed on the merged commit using Python 3.13.17 and pytest 8.3.5. Session-only storage remains an intentional limitation. A preliminary archive was extracted and verified: 61 tests passed in 0.11s and the demo ran. The final evidence-only ZIP still requires regeneration.
 
 ## D Console and end to end demonstration
 
@@ -135,8 +135,7 @@ PG demonstrations through service/tests or not applicable: Not applicable
 
 Access route or approved equivalent / limitations: GitHub Copilot was used through PyCharm during Stage 8. Saved evidence is available in `stage08/copilot_f8_01_diagnosis.md` and `stage08/copilot_f8_02_diagnosis.md`. Stage 9 AI review details are recorded in its evidence file, but the independent PR review was not completed.
 
-Available AI evidence and missing evidence honestly disclosed: Stage 8 includes recorded AI prompts, diagnoses, human decisions and test results. ChatGPT assisted with Stage 12 documentation and identifying the missing import; Alex applied the correction and verified the tests. The missing independent review of Stage 9 remains disclosed. Kreesha independently approved Stage 12 PR #11 before merging. Final release packaging and approval are still pending.
-
+Available AI evidence and missing evidence honestly disclosed: Stage 8 includes recorded AI prompts, diagnoses, human decisions and test results. ChatGPT assisted with Stage 12 documentation and identifying the missing import; Alex applied the correction and verified the tests. The missing independent review of Stage 9 remains disclosed. Kreesha independently approved Stage 12 PR #11 before merging. Alex recorded a conditional human release approval in Section J. Regenerating the final archive and confirming its delivery route remain pending.
 
 ## F README and reproducibility check
 
@@ -152,11 +151,11 @@ Available AI evidence and missing evidence honestly disclosed: Stage 8 includes 
 
 Root README index and project/README verified:
 
-Both README files were updated with the SmartCare features, setup instructions, architecture, requirements and limitations. Kreesha independently reviewed and approved the Stage 12 changes through PR #11. Fresh-copy reproducibility verification is still pending.
+Both README files were updated with the SmartCare features, setup instructions, architecture, requirements and limitations. Kreesha independently reviewed and approved the Stage 12 changes through PR #11. Alex ran the separately extracted source ZIP using the existing external Python 3.13 environment: 61 tests passed in 0.11s and the demonstration ran. Independent fresh setup by another verifier remains pending.
 
 Fresh clone or extracted ZIP / candidate identity:
 
-PR #11 was merged into main at commit 0a4d76429ca42ce5cab4b67dce0c9adc9d014a17. All 61 tests passed on this merged commit using Python 3.13.17 and pytest 8.3.5. Testing from a freshly extracted submission ZIP is still pending.
+PR #11 was merged into main at commit 0a4d76429ca42ce5cab4b67dce0c9adc9d014a17. All 61 tests passed on this merged commit using Python 3.13.17 and pytest 8.3.5. A preliminary ZIP from evidence commit 25c5bb7777a9cbb9235eceae67c38cad684e05ab was extracted separately: all 61 tests passed in 0.11s and main.py ran. The final ZIP must be regenerated from the last evidence-only commit.
 
 Verifier and clean environment / actual version:
 
@@ -176,7 +175,7 @@ All commands used Python 3.13.17. The tests used pytest 8.3.5.
 
 Missing local file or setup gap / remedy and recheck:
 
-No setup or test failures were identified. Kreesha's independent PR review and integration are complete. Final ZIP verification, fresh-copy testing, and confirmation of the submitted commit SHA remain pending.
+No setup or test failures were identified. Kreesha's independent PR review and integration are complete. Preliminary extracted-ZIP tests and the application demonstration passed. Independent fresh setup by another member, final evidence-only commit SHA and regenerated archive verification remain pending.
 
 
 ## G Known limitations debt and release notes
@@ -199,7 +198,7 @@ All records are session-only and disappear on exit. The application is an educat
 
 AI-assisted development note:
 
-GitHub Copilot suggestions were evaluated against code and tests during Stage 8. ChatGPT assisted with Stage 12 documentation and identifying the missing import; Alex applied and tested the correction. Stage 9's missing independent pull-request review is disclosed, and final Stage 12 approval remains pending.
+GitHub Copilot suggestions were evaluated against code and tests during Stage 8. ChatGPT assisted with Stage 12 documentation and identifying the missing import; Alex applied and tested the correction. Stage 9's missing independent pull-request review is disclosed. Alex recorded a conditional Stage 12 human release decision in Section J.
 
 
 | Debt item | Impact | Priority | Future action | Accepted? / release rationale |
@@ -234,14 +233,14 @@ Not applicable.
 
 | Requirement/claim | Reproduction/observation | Impact/severity | Owner/action | Corrective diff | Focused/full recheck | Residual limit |
 |---|---|---|---|---|---|---|
-| Python 3.13 compatibility and code quality | During code review, `services.py` was found to use `datetime` in a type hint without importing it. A failure on Python 3.13 before the fix was not directly tested. | Compatibility risk | Alex added the missing import. | Added `from datetime import datetime` to `project/smartcare/services.py`. | 61 passed in 0.07s on Python 3.14.6; 61 passed in 0.11s on Python 3.13.17; 61 passed in 0.06s on the merged commit. | Kreesha approved PR #11. No test failures remain. Fresh-copy and ZIP verification are pending. |
+| Python 3.13 compatibility and code quality | During code review, `services.py` was found to use `datetime` in a type hint without importing it. A failure on Python 3.13 before the fix was not directly tested. | Compatibility risk | Alex added the missing import. | Added `from datetime import datetime` to `project/smartcare/services.py`. | 61 passed in 0.07s on Python 3.14.6; 61 passed in 0.11s on Python 3.13.17; 61 passed in 0.06s on the merged commit. | Kreesha approved PR #11. No test failures remain. The preliminary ZIP was extracted and passed 61 tests in 0.11s; final ZIP regeneration and verification remain pending. |
 Justified no-change conclusion if no defect found:
 
 One code issue was identified and corrected. No other defects requiring code changes were found during the completed checks. Existing test files and assertions were preserved.
 
 Release blockers still open / status:
 
-Kreesha's independent review and Git integration are complete. The merged application passed all 61 tests using Python 3.13.17 and pytest 8.3.5. No automated test failures are currently known. Final documentation, fresh-copy verification, ZIP creation and submission checks remain outstanding.
+Kreesha's independent review and Git integration are complete. The merged application passed all 61 tests using Python 3.13.17 and pytest 8.3.5. No automated test failures are currently known. Preliminary ZIP extraction and testing passed. The final evidence-only commit, regenerated ZIP, submitted SHA and confirmed delivery route remain outstanding.
 
 ## I Git review and integration evidence
 
@@ -269,7 +268,7 @@ Before committing, Git showed exactly four modified files and no errors from git
 
 Secrets/staff material/caches/tool-metadata exclusion check:
 
-Final source ZIP and repository-content exclusion checks remain pending. These will confirm that no secrets, real patient data, staff solutions, virtual environments or unnecessary generated files are included.
+The preliminary ZIP file listing was checked for required paths and excluded environment, cache, Stage 8 recovery and duplicate application files. A final content-level check for sensitive material and verification of the regenerated ZIP remain pending.
 
 Candidate recovery plan / known-good SHA:
 
@@ -284,15 +283,15 @@ Alex completed Stages 6 and 8 and prepared the Stage 12 release, including docum
 
 Decision — READY FOR COURSE RELEASE / READY WITH DOCUMENTED LIMITATIONS / NOT YET READY:
 
-NOT YET READY
+READY WITH DOCUMENTED LIMITATIONS
 
 Approver / date / rationale and evidence:
 
-Kreesha independently reviewed and approved PR #11 before it was merged. Alex verified the merged commit 0a4d76429ca42ce5cab4b67dce0c9adc9d014a17 using Python 3.13.17 and pytest 8.3.5, with 61 tests passing in 0.06 seconds. Final release approval has not yet been recorded.
+Alex Marek, 9 November 2026. I approve the undergraduate SmartCare application for course release with documented limitations. Kreesha independently approved PR #11. All 61 tests passed on the merged application commit using Python 3.13.17 and pytest 8.3.5. The source ZIP created from commit 25c5bb7777a9cbb9235eceae67c38cad684e05ab was extracted separately and passed all 61 tests in 0.11 seconds. The extracted application demonstration also ran successfully.
 
 What risks remain / conditions / owners:
 
-Alex must finish the Stage 12 evidence, create and verify the submission ZIP, confirm its contents match the intended Git commit, and complete the submission checklist. Fresh-copy verification remains outstanding.
+SmartCare retains records only during the current session and is not suitable for production healthcare use. These limitations are documented and accepted for the undergraduate assignment. Alex must regenerate the final ZIP after the last evidence-only commit and confirm the submission delivery method. No executable code changes are planned.
 
 Can the team explain the system:
 
@@ -304,7 +303,7 @@ Yes.
 
 Common decision / PG decision where different:
 
-The undergraduate common release is awaiting final packaging and verification. The PG extension is not applicable.
+The undergraduate common application is ready for course release with documented limitations. The PG extension is not applicable.
 
 
 ## K Final tested release SHA
@@ -319,19 +318,29 @@ Not applicable
 
 Final submitted SHA / repository URL:
 
-https://github.com/CoolCoder49/st1--assignment-3
+Repository: https://github.com/CoolCoder49/st1--assignment-3
+
+The full submitted SHA will be supplied with the repository URL and final submission details after the last evidence-only commit. It cannot be written into that same commit without changing its SHA. The tested application SHA is recorded above.
 
 Evidence-only later commit and difference explanation:
 
-The Stage 12 documentation changes will be committed separately after the tested application merge 0a4d764. No further executable changes have been made.
+The application was tested on the merged commit 0a4d76429ca42ce5cab4b67dce0c9adc9d014a17. The subsequent commit 25c5bb7777a9cbb9235eceae67c38cad684e05ab updated only the Stage 12 Markdown evidence. The final release-evidence commit will also contain documentation changes only.
 
 Executable changes after testing and re-verification:
 
-No executable code changes have been made since the merged application passed all 61 tests. Any further executable changes would require another full test run.
+No executable code changes have been made since the tested application commit 0a4d76429ca42ce5cab4b67dce0c9adc9d014a17.
 
 Source ZIP name / SHA correspondence / extracted comparison:
 
-Planned ZIP: SmartCare-Assignment3-Final-Submission.zip. The ZIP will contain the complete Assignment 3 repository contents required for our undergraduate pathway, including the application, tests, stage evidence, root README, and .gitignore. Creation from the final Git commit and extracted-copy verification are pending.
+The verification ZIP, SmartCare-Assignment3-Final-Submission.zip, was generated using git archive from commit 25c5bb7777a9cbb9235eceae67c38cad684e05ab.
+
+Archive contents were inspected and confirmed to include the root README and .gitignore, application source, six test files, completed undergraduate stage records and unchanged PG-only templates. No .git directory, virtual environments, caches or recovery files appeared in the archive.
+
+The ZIP was extracted into SmartCare-Assignment3-Final-Verification. From its project/ directory, the complete test suite passed using Python 3.13.17 and pytest 8.3.5: 61 passed in 0.11 seconds.
+
+The extracted application's main.py demonstration also ran successfully and displayed the synthetic appointment and session-only storage notice.
+
+The final ZIP will be regenerated from the last evidence-only commit, with its exact source correspondence and extracted operation checked before submission
 
 
 ## L Submission package verification
@@ -341,15 +350,15 @@ Planned ZIP: SmartCare-Assignment3-Final-Submission.zip. The ZIP will contain th
 - [ ] Architecture/code quality and final AI/dependency checks complete.
 - [ ] Root README and project/README reproduced by another verifier.
 - [x] Release notes, technical debt and limitations visible.
-- [ ] Independent human review, integration and release decision recorded.
+- [x] Independent human review, integration and release decision recorded.
 - [ ] Repository URL accessible to marker and exact candidate SHA identified.
 - [ ] One source ZIP from submitted commit with root README.md and .gitignore.
-- [ ] project/ source and all accumulated applicable tests included.
-- [ ] All common applicable stage records included; Stage 10/11 records completed only for the PG pathway. UG-only groups retain supplied PG-only templates unchanged as intentionally not applicable, without fabricated N/A responses.
-- [ ] No .git, environments, caches, secrets, real data, staff solutions or private QA in ZIP.
-- [ ] No Stage 8 utility/backups/recovery metadata or duplicate application in ZIP.
-- [x] Mixed-group common protection and candidate upload routing checked.
-- [ ] Group reflection, confidential individual peer forms and common team viva routed separately.
+- [x] project/ source and all accumulated applicable tests included.
+- [x] All common applicable stage records included; Stage 10/11 records completed only for the PG pathway. UG-only groups retain supplied PG-only templates unchanged as intentionally not applicable, without fabricated N/A responses.
+- [ ] No .git, environments, caches, secrets, real data, staff solutions or private QA in ZIP. Filename exclusions were checked; final content-level privacy review remains pending.
+- [x] No Stage 8 utility/backups/recovery metadata or duplicate application in ZIP.
+- [x] Undergraduate-only pathway confirmed; mixed-group candidate routing is not applicable.
+- [ ] Group reflection, confidential individual peer forms and individual Cadmus oral assessment routed separately.
 
 Confirmed assessment item/upload route:
 
@@ -373,7 +382,7 @@ The oral recording will be completed through Cadmus.
 
 Remaining administration or release dependency:
 
-Final evidence commit, source ZIP creation, extracted-copy verification, Canvas submission, group reflection, and peer review.
+Final evidence-only commit and regenerated source ZIP, exact submitted SHA and confirmed ZIP delivery route, Canvas group URL submission, separate group reflection, confidential individual peer forms and individual Cadmus oral assessment.
 
 
 ## M Formative questions
@@ -474,7 +483,10 @@ Software engineers are still absolutely required as writing code is only one ele
 
 Optional bounded-change practice only: validation rule, focused test, safe error-message change, explicit-input query or agreed status rule with test. Explain expected impact before editing, make a small change, run the test, and identify evidence to inspect if unsure. No live AI unless explicitly permitted. Preserve the submitted candidate.
 
-Practice question/change and reasoning: Not undertaken.
+Practice question/change and reasoning: 
 
-Separate reflection / peer / common team viva evidence links and routing: The separate reflection report and peer review still needs to be completed through canvas.
-No further coding stage. Later corrections use the published assessment process.
+Not undertaken.
+
+Separate reflection / peer / common team viva evidence links and routing:
+
+The separate reflection report and peer review still needs to be completed through canvas.
