@@ -1,37 +1,40 @@
 # Software Technology 1 Assignment 3
 
 One group repository and one evolving SmartCare application.
-Baseline: Stage 6 foundation, 2026 revision 2. This starter deliberately leaves the three Stage 6 service tasks incomplete.
+
+Requirements baseline: SmartCare A3 2026, revision 2. The common undergraduate functionality from Stages 6-9 has been implemented. Stage 12 final release verification is in progress.
 
 ## Group index
 
-- Group and tutorial: [complete]
-- Member names, GitHub usernames and UG/PG cohorts: [complete]
-- Shared repository URL: [complete]
-- Latest completed stage: [complete]
-- Verified code SHA: [complete]
-- Test command, working directory and observed result: [complete]
-- Final submitted SHA, if different from tested code SHA: [complete; explain evidence-only changes]
+- Group and tutorial: Tuesday 1:30-3:30, Group 2
+- Member names, GitHub usernames and UG/PG cohorts: Alex Marek (UG) — CoolCoder49; Kreesha Singh (UG) — kreesha-12
+- Shared repository URL: [https://github.com/CoolCoder49/st1--assignment-3](https://github.com/CoolCoder49/st1--assignment-3)
+- Latest completed stage: 9 (Stage 12 in progress)
+- Verified common starting SHA: `89d106fecbd1671a184728f233c3e669ea0a7957`
+- Test command, working directory and observed result: `python -m pytest -q` from `project/` - 61 passed in 0.07s after the Stage 12 import correction, using Python 3.14.6 and pytest 9.2.0.
+- Final submitted SHA, if different from tested code SHA: Pending final verification, commit and integration.
 
 Do not put student IDs, private peer ratings, credentials or personal contact details here.
 
 ## Complete package and stage sequence
 
-All Assignment 3 ordinary materials are supplied at the beginning: the Overview, Git/GitHub Group Guide, Stage 6–12 handouts, this incomplete SmartCare starter, all seven blank activity/evidence records, and assessment instructions/forms. Stage numbers control the engineering sequence, not document availability.
+All Assignment 3 materials were supplied at the beginning, including the Overview, Git/GitHub Group Guide, Stage 6-12 handouts, SmartCare starter, activity/evidence records and assessment instructions/forms.
 
-Start with Stage 6. Complete each stage only after the previous applicable stage has been integrated, verified and recorded.
+The project was developed continuously through the applicable stages:
 
 UG: 6 → 7 → 8 → 9 → 12
 
 PG: 6 → 7 → 8 → 9 → 10 → 11 → 12
 
-Use ONE group repository and ONE evolving project/ throughout. The stage folders contain your response/evidence records; all templates are already present. Preserve previous code, tests, records and Git history. Never replace project/ with another starter or copy completed staff reference implementations: those are private staff material.
+Our group follows the UG pathway. Stages 6-9 have been completed and integrated into the common project. Stage 12 focuses on final testing, documentation, review and release.
 
-Stages 10 and 11 are PG-only. UG skipping these stages is correct and complete. In an UG-only submission, retain the supplied PG-only templates unchanged as intentionally not applicable; do not fill them with fabricated N/A responses. Optional UG collaboration is voluntary and unassessed. Mixed groups protect the verified common Stage 9 SHA while PG extends the same project. Use only the teaching team's confirmed Copilot agent capability or approved equivalent route.
+One group repository and one evolving `project/` directory have been used throughout. Previous code, tests, evidence records and Git history are retained.
 
-The Stage 8 preparation utility version 1.1 is a controlled teaching asset supplied or run by teaching staff when Stage 8 begins. Follow the instructions provided by your tutor. It is not included in the normal student package. If temporarily supplied for the handout commands, keep it in a sibling Stage_8_Assets/ folder outside the repository. Never include it in Git or the final submission. The Stage 7 checkpoint and Stage 8 technical activity are unchanged.
+Stages 10 and 11 are PG-only and are not applicable to our group. Their supplied templates remain unchanged.
 
-Complete the supplied Stage 12 record when you reach Stage 12. UG releases the common scope; PG releases the extended scope, protecting the common SHA where needed. Record exact tested/submitted SHAs and create one source ZIP as the handout directs, without duplicate application copies per stage.
+The Stage 8 preparation utility is a controlled teaching asset and is not included in the final project submission.
+
+The final Stage 12 record will include verification results, review evidence, the exact submitted SHA and the final source ZIP.
 
 ## Application and evidence
 
@@ -44,13 +47,19 @@ Complete the supplied Stage 12 record when you reach Stage 12. UG releases the c
 - [Stage 11 PG activities and evidence](stage11_pg/stage11_activities_and_evidence.md)
 - [Stage 12 activities and evidence](stage12/stage12_activities_and_evidence.md)
 
-Git commands in the practical guide run from this root. Application commands run from project/:
+Git commands run from the repository root. Application commands run from `project/`:
 
-```sh
+```powershell
 cd project
+python -m pip install -r requirements-dev.txt
 python main.py
-python -m pytest
+python main.py --interactive
+python -m pytest -q
 cd ..
 ```
 
-Use the approved environment described in the Git/GitHub group guide. The verified baseline is Python 3.13 with pytest 8.3.5. GitHub Copilot is the nominated assistant; verify significant output and record required decisions. Use synthetic data only. Use each supplied record only when you reach that stage in the applicable sequence.
+The teaching baseline is Python 3.13 with pytest 8.3.5. The Stage 12 tests have passed using Python 3.14.6 and pytest 9.2.0. Final release verification remains pending.
+
+SmartCare uses session-only in-memory storage, so records are lost when the application exits. Only synthetic data must be used.
+
+GitHub Copilot was used during development, with significant suggestions and human decisions documented in the stage evidence records. ChatGPT also assisted with documentation and identifying a missing import. Final independent review and release approval remain pending.
