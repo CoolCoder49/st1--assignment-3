@@ -1,100 +1,80 @@
-# SmartCare Stage 6 starter
+# SmartCare Stage 12
 
-Requirements baseline: SmartCare A3 2026 revision 2. Python 3.13 and pytest 8.3.5 verified. Runtime uses only the standard library.
+**Requirements baseline:** SmartCare A3 2026, revision 2
+**Release scope:** Common undergraduate functionality from Stages 6-9
+**Starting SHA:** `89d106fecbd1671a184728f233c3e669ea0a7957`
+**Final release SHA:** Pending Stage 12 verification and integration
 
-From this directory, using a Python environment with the development dependency installed:
+## Overview
 
-```sh
-python main.py
-python -m pytest
+SmartCare is a Python appointment management application that allows users to register and find patients and practitioners, book and cancel appointments, retrieve appointment history, and list appointments using an interactive console.
+
+## Setup and Running
+
+The teaching baseline uses Python 3.13 and pytest 8.3.5. The project uses the Python standard library, with pytest required for testing.
+
+From the repository root:
+
+```powershell
+cd project
+python -m pip install -r requirements-dev.txt
 ```
 
-If needed in your approved environment: `python -m pip install -r requirements-dev.txt`.
+Run the demonstration:
 
-The demo registers synthetic records and books/finds an appointment. All supplied tests pass. Data exists only in this session and is lost on exit; FR-10 restart persistence is retired. Use synthetic information only.
+```powershell
+python main.py
+```
 
-`domain.py` contains the entities, status and guarded cancellation. `data_store.py` holds three dictionaries through add/find/list methods. The three services share that object. Supplied registration, booking, appointment lookup and conflict checking work. IDs are trimmed, non-blank and case-sensitive. Properties provide read-only identity/appointment state; changes go through domain methods. No special architecture terminology is required.
+Launch the interactive menu:
 
-Stage 6 TODOs: service patient/practitioner lookup and cancellation. Stage 9 TODOs: pure query, named sort key, service listing and interactive menu. The starter TODO contracts are in docstrings. All three Stage 6 TODO calls deliberately raise NotImplementedError; future TODOs remain stubs. No PG rescheduling or assurance solution is supplied.
+```powershell
+python main.py --interactive
+```
 
-Service booking accepts IDs and a `datetime` (local, minute precision). Console parser accepts exactly `YYYY-MM-DD HH:MM`. Store lookups return None when absent; service lookups raise LookupError. Invalid values, duplicates, conflicts and illegal transitions raise ValueError. Lists are new containers holding the stored objects. No age, duration, patient-conflict or past-date rules apply.
+Run the automated tests:
 
-SmartCare Application — Stage 9
+```powershell
+python -m pytest -q
+```
 
-Environment: Python 3.13 and pytest 8.3.5. The application uses only the Python standard library.
+Verified Stage 12 results: All 61 tests passed using Python 3.13.17 and pytest 8.3.5 in 0.11 seconds. The demonstration (python main.py) and interactive menu (python main.py --interactive) also ran successfully. The tests previously passed using Python 3.14.6 and pytest 9.2.0. Final independent review and fresh-copy reproducibility verification remain pending.
 
-Running the Application
+## Features
 
-Run these commands from the project/ directory.
+- Patient and practitioner registration and lookup.
+- Appointment booking using registered participants.
+- Prevention of conflicting scheduled appointments for the same practitioner and time.
+- Appointment cancellation with retained history.
+- Appointment lookup by ID.
+- Practitioner appointment listing with optional status filtering.
+- Deterministic sorting by appointment date/time and ID.
+- Interactive menu with input validation and error recovery.
 
-To run the supplied demonstration:
+## Project Structure
 
-python3 main.py
+- `main.py` - Starts the demonstration or interactive menu.
+- `smartcare/domain.py` - Domain classes, validation and appointment status.
+- `smartcare/data_store.py` - In-memory patient, practitioner and appointment records.
+- `smartcare/services.py` - Registration, lookup, booking, cancellation and listing operations.
+- `smartcare/queries.py` - Pure filtering and sorting functions.
+- `smartcare/console.py` - Console input, output and menu handling.
+- `tests/` - Automated tests covering the application.
 
-To launch the interactive menu:
+## Known Limitations
 
-python3 main.py --interactive
+SmartCare stores data only during the current session. All records are lost when the application exits. Permanent storage is not required because FR-10 restart persistence has been retired.
 
-To run the automated test suite:
+The application uses local date/time values at minute precision. It does not implement patient scheduling conflicts, appointment durations, age restrictions or restrictions on past appointment dates.
 
-python3 -m pytest -q
+The application is a teaching project, not a production medical system. Use synthetic data only. Authentication, billing, notifications and clinical record management are outside its scope.
 
-Stage 9 Features
+Stages 10 and 11 are PG-only and are not applicable to this undergraduate release.
 
-The application supports:
+## Testing and Responsible AI
 
-Registering and finding patients.
+The accumulated test suite contains 61 tests covering domain validation, services, appointment conflicts, cancellation, queries and workflows.
 
-Registering and finding practitioners.
+GitHub Copilot was used during earlier development stages, with prompts, findings and human decisions recorded in the relevant stage evidence files. We evaluated suggestions against the requirements and tests.
 
-Booking appointments.
-
-Preventing appointments from being booked with the same practitioner at the same time.
-
-Cancelling existing appointments while retaining their history.
-
-Finding appointments by appointment ID.
-
-Listing appointments for a practitioner.
-
-Filtering appointments by scheduled, cancelled or completed status.
-
-Sorting appointments by date/time and appointment ID.
-
-The interactive menu provides options for these operations and continues until the user selects Exit.
-
-Queries and Services
-
-The queries.py module contains two pure functions:
-
-appointment_sort_key() provides a reusable appointment sorting key.
-
-select_appointments() filters appointments by practitioner and optional status, returning a new sorted list without modifying the original collection.
-
-The AppointmentService coordinates appointment listing and validates practitioner IDs and status values before using the query function.
-
-The application separates responsibilities between domain entities, the in-memory data store, services, pure query functions and console interaction.
-
-Testing and Verification
-
-The project includes the original tests and additional Stage 9 tests:
-
-test_queries.py tests appointment filtering, sorting and non-mutation.
-
-test_workflows.py tests booking, conflict prevention, cancellation, retained history and practitioner listing.
-
-Latest recorded test result: 61 passed.
-
-Run the complete test suite using:
-
-python3 -m pytest -q
-
-Data Storage and Limitations
-
-SmartCare uses an in-memory data store containing patients, practitioners and appointments.
-
-Records are available only during the current application session and are discarded when the application exits. The application does not implement database storage or restart persistence. FR-10 restart persistence is retired.
-
-Only synthetic information should be used when testing the application.
-
-The application does not implement additional rules for patient scheduling conflicts, appointment duration, age restrictions or past appointment dates.
+Stage 12 includes a final documentation, code-quality and release review. Independent approval and the final submitted SHA will be recorded after verification.

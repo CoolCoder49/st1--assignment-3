@@ -1,6 +1,6 @@
 """Simple workflows using a shared SmartCareDataStore object."""
 
-
+from datetime import datetime
 from smartcare.data_store import SmartCareDataStore
 from smartcare.domain import Appointment, AppointmentStatus, Patient, Practitioner
 from smartcare.queries import select_appointments
